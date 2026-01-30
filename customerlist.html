@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Grocery Store Management</title>
+{% endblock %}
+
+{% block body %}
+<h1>Customer List</h1>
+<table border="2">
+    <tr>
+        <th>ID</th>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    {% for customer in data %}
+    <tr>
+        <td>{{ customer.customerID }}</td>
+        <td>{{ customer.customerNAME }}</td>
+        <td>{{ customer.customerEMAIL }}</td>
+        <td>{{ customer.customerPHONE }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="button-container">
+    <button id="addcustomer">Add Customer</button>
+</div>
+<div class="button-container">
+    <button type="button" onclick="cancel('{{ url_for('index') }}')">Go Back</button>
+</div>
+{% endblock %}

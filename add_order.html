@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Add New Order</title>
+<script src="{{ url_for('static', filename='functions.js') }}"></script>
+<script>
+    function addProductField() {
+        const container = document.getElementById('product-container');
+
+        // Create a div to hold the new product select and quantity input
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product-field';
+
+        // Create a select dropdown for products
+        const productSelect = document.createElement('select');
+        productSelect.name = 'productNames[]';
+        productSelect.required = true;
+        
+        // Populate the select dropdown with product options from the products list
+        {% for product in products %}
+        const option{{ loop.index }} = document.createElement('option');
+        option{{ loop.index }}.value = "{{ product.productNAME }}";
+        option{{ loop.index }}.text = "{{ product.productNAME }}";
+        productSelect.appendChild(option{{ loop.index }});
+        {% endfor %}
+
+        // Create a quantity input field
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.min = 1;
+        quantityInput.placeholder = 'Quantity';
+        quantityInput.required = true;
+
+        // Append the select dropdown and quantity input to the productDiv
+        productDiv.appendChild(productSelect);
+        productDiv.appendChild(quantityInput);
+        container.appendChild(productDiv);
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<h1>Add New Order</h1>
+
+<!-- Main Order Form -->
+<form action="{{ url_for('save_order') }}" method="post">
+    <label for="customerID">Customer ID:</label>
+    <input type="number" id="customerID" name="customerID" required>
+
+    <label for="orderDate">Order Date:</label>
+    <input type="date" id="orderDate" name="orderDate" required>
+
+    <!-- Products section with option to add multiple products -->
+    <h3>Products</h3>
+    <div id="product-container">
+        <!-- Initial product selection and quantity input -->
+        <div class="product-field">
+            <select name="productNames[]" required>
+                {% for product in products %}
+                <option value="{{ product.productNAME }}">{{ product.productNAME }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="quantities[]" min="1" placeholder="Quantity" required>
+        </div>
+    </div>
+
+    <!-- Button to dynamically add more product and quantity fields -->
+    <button type="button" onclick="addProductField()">Add Product</button>
+    <button type="submit">Save Order</button>
+    <button type="button" onclick="cancel('{{ url_for('order_list') }}')">Cancel</button>
+</form>
+
+<!-- Error message display for invalid customer ID -->
+{% if error_message %}
+<p style="color: red;">{{ error_message }}</p>
+{% endif %}
+
+{% endblock %}
+
+
+

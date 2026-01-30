@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Grocery Store Management</title>
+{% endblock %}
+
+{% block body %}
+<h1>Order List</h1>
+<table border="2">
+    <tr>
+        <th>Order ID</th>
+        <th>Customer ID</th>
+        <th>Date</th>
+    </tr>
+    {% for order in data %}
+    <tr>
+        <td><a href="{{ url_for('order_details', order_id=order.orderID) }}">{{ order.orderID }}</a></td>
+        <td>{{ order.customerID}}</td>
+        <td>{{ order.orderDate }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="button-container">
+    <form action="{{ url_for('add_order') }}" method="get">
+        <button type="submit">Add New Order</button>
+        <button type="button" onclick="cancel('{{ url_for('index') }}')">Back</button>
+    </form>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Add New Product</title>
+{% endblock %}
+
+{% block body %}
+<h1>Add New Product</h1>
+<form action="{{ url_for('save_product') }}" method="post">
+    <div>
+        <label for="productNAME">Product Name:</label>
+        <input type="text" id="productNAME" name="productNAME" required>
+    </div>
+    <div>
+        <label for="pricePERunit">Price per Unit:</label>
+        <input type="text" id="pricePERunit" name="pricePERunit" required>
+    </div>
+    <div>
+        <label for="unitID">Unit Type:</label>
+        <select id="unitID" name="unitID">
+            <option value="1">Per Item</option>
+            <option value="2">Per KG</option>
+        </select>
+    </div>
+    
+    <div>
+        <button type="submit">Save Product</button>
+    </div>
+    <div>
+        <button type="button" onclick="cancel('{{ url_for('index') }}')">Cancel</button>
+    </div>
+</form>
+{% endblock %}
